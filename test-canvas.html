@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Фронт для микросервиса "Игра 'Жизнь'"</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="500" height="400" style="background: aqua; border: 0cap;"></canvas>
+    <script>
+        var sizeX = 10, sizeY = 10;
+
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var lenX = canvas.width / sizeX;
+        var lenY = canvas.height / sizeY;
+        netOnCanvas(ctx);
+
+        function netOnCanvas(ctx) {
+            ctx.strokeStyle = "black";
+            ctx.beginPath();
+
+            for (let i = 0; i < sizeX; i++) {
+                ctx.moveTo(i * lenY, 0);
+                ctx.lineTo(i * lenY, canvas.height);
+                // ctx.stroke();
+            }
+            for (let j = 0; j < sizeY; j++) {
+                ctx.moveTo(0, j * lenX);
+                ctx.lineTo(canvas.width, j * lenX);
+                // ctx.stroke();
+            }
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>
