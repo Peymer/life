@@ -91,6 +91,11 @@ function nextGeneration(sizeX, sizeY, pole) {
 let pole = init(sizeX, sizeY)
 for (let g = 0; g < 150; g++) {
     console.log('Поколение:', g)
+    const gg = {
+        "gen": g,
+        "pole": pole
+    }
+    console.error("Для передачи на сервер:", JSON.stringify(gg))
     show(pole)
     pole = nextGeneration(sizeX, sizeY, pole)
 }
