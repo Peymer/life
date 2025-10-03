@@ -12,7 +12,7 @@
         disabled>Stop</button><br />
 
     Поколение:<div id="Generation"></div>
-    <canvas id="myCanvas" width="500" height="400" style="background: aqua; border: 0cap;"></canvas><br />
+    <canvas id="myCanvas" width="1000" height="600" style="background: aqua; border: 0cap;"></canvas><br />
     <button id="nextG" onclick="Next()">Следующее</button>
     <textarea id="tt"></textarea>
 
@@ -58,7 +58,7 @@
                 "redirect": 'follow',
                 "mode": 'cors',
                 "method": "POST",
-                "body": JSON.stringify({gen: Generation, sizeX: sizeX, sizeY: sizeY, pole: pole})
+                "body": JSON.stringify({ gen: Generation, sizeX: sizeX, sizeY: sizeY, pole: pole })
             })
             let result = await q.json();
 
