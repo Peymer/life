@@ -58,7 +58,7 @@
                 "redirect": 'follow',
                 "mode": 'cors',
                 "method": "POST",
-                "body": JSON.stringify({ gen: Generation, pole: pole })
+                "body": JSON.stringify({gen: Generation, sizeX: sizeX, sizeY: sizeY, pole: pole})
             })
             let result = await q.json();
 
