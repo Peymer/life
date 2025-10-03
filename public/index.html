@@ -14,11 +14,9 @@
     Поколение:<div id="Generation"></div>
     <canvas id="myCanvas" width="1000" height="600" style="background: aqua; border: 0cap;"></canvas><br />
     <button id="nextG" onclick="Next()">Следующее</button>
-    <textarea id="tt"></textarea>
 
     <script>
-        var sizeX, sizeY, pole, lenX, lenY, timer
-        var Generation = 0;
+        var sizeX, sizeY, pole, lenX, lenY, timer, Generation
 
         const generationHTML = document.getElementById("Generation")
         const canvas = document.getElementById("myCanvas");
@@ -30,15 +28,15 @@
             sizeY = document.getElementById("sizeY").value
             lenX = canvas.width / sizeX
             lenY = canvas.height / sizeY
-
+            Generation = 0
             pole = init(sizeX, sizeY)
-            generationHTML.innerText = Generation++;
+            generationHTML.innerText = Generation;
             drawOnCanvas(ctx, pole)
 
             timer = setInterval(() => Next(), 2000); // новое поколение через 2 секунды (2000мс=2*1000с)
             document.getElementById("startId").disabled = true
             document.getElementById("stopId").disabled = false
-            // document.getElementById("nextG").disabled = false
+            document.getElementById("nextG").disabled = false
         }
 
         // остановка таймера
@@ -46,7 +44,7 @@
             clearInterval(timer)
             document.getElementById("startId").disabled = false
             document.getElementById("stopId").disabled = true
-            // document.getElementById("nextG").disabled = true
+            document.getElementById("nextG").disabled = true
         }
 
         // следующее поколение
