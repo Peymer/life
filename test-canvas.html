@@ -22,13 +22,13 @@
             ctx.beginPath();
 
             for (let i = 0; i < sizeX; i++) {
-                ctx.moveTo(i * lenY, 0);
-                ctx.lineTo(i * lenY, canvas.height);
+                ctx.moveTo((i + 1) * lenY, 0);
+                ctx.lineTo((i + 1) * lenY, canvas.height);
                 // ctx.stroke();
             }
             for (let j = 0; j < sizeY; j++) {
-                ctx.moveTo(0, j * lenX);
-                ctx.lineTo(canvas.width, j * lenX);
+                ctx.moveTo(0, (j + 1) * lenX);
+                ctx.lineTo(canvas.width, (j + 1) * lenX);
                 // ctx.stroke();
             }
             ctx.stroke();

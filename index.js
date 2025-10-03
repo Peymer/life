@@ -22,12 +22,12 @@ else
 
 function netOnCanvas(ctx) {
     for (let i = 0; i < sizeX; i++) {
-        ctx.moveTo(i * lenY, 0);
-        ctx.lineTo(i * lenY, ctx.height);
+        ctx.moveTo((i + 1) * lenY, 0);
+        ctx.lineTo((i + 1) * lenY, ctx.height);
     }
     for (let j = 0; j < sizeY; j++) {
-        ctx.moveTo(0, j * lenX);
-        ctx.lineTo(ctx.width, j * lenX);
+        ctx.moveTo(0, (j + 1) * lenX);
+        ctx.lineTo(ctx.width, (j + 1) * lenX);
     }
     ctx.stroke();
 }
