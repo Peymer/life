@@ -11,36 +11,41 @@ const options = {
     },
     body: JSON.stringify(gen)
 };
-/// test
-var sizeX = 10, sizeY = 10;
 
-var Generation = 0;
+
+
+//клиентские функции
+var sizeX, sizeY, pole, Generation = 0
 
 const generationHTML = document.getElementById("Generation")
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-var lenX = canvas.width / sizeX;
-var lenY = canvas.height / sizeY;
-// netOnCanvas(ctx);
+var lenX, lenY
 
 
-var pole = init(sizeX, sizeY)
-generationHTML.innerText = Generation++;
-drawOnCanvas(ctx, pole)
 
-/// test
-let response = await fetch("http://127.0.0.1:5555/Life", options);
-if (response.ok) {
-    gen = response.json();
-    drawOnCanvas(ctx, gen);
+function Start() {
+    sizeX = document.getElementById("sizeX").value
+    sizeY = document.getElementById("sizeY").value
+    lenX = canvas.width / sizeX
+    lenY = canvas.height / sizeY
+
+    pole = init(sizeX, sizeY)
+    generationHTML.innerText = Generation++;
+    drawOnCanvas(ctx, pole)
 }
-else
-    document.body.append("Ошибка HTTP: " + response.status);
-
-
-
 
 function Next() {
+    /// работа с сервером
+    // let response = await fetch("http://127.0.0.1:5555/Life", options);
+    // if (response.ok) {
+    //     gen = response.json();
+    //     drawOnCanvas(ctx, gen);
+    // }
+    // else
+    //     document.body.append("Ошибка HTTP: " + response.status);
+    if (!pole)
+        return
     generationHTML.innerText = Generation++;
     pole = init(sizeX, sizeY)
 
@@ -111,4 +116,3 @@ function init(statX, startY) {
     }
     return pole;
 }
-
