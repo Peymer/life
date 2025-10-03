@@ -2,6 +2,7 @@ import F from 'fastify'
 import staticF from '@fastify/static'
 import cors from '@fastify/cors'
 import path from 'path'
+import nextGeneration from './app.mjs'
 
 const __dirname = import.meta.dirname;
 
@@ -22,6 +23,7 @@ server.get("/", async (req, repl) => {
 server.post("/", async (req, reply) => {
     let data = JSON.parse(req.body)
     data.gen++;
+    data.pole = nextGeneration(data.sizeX, data.sizeY, data.pole)
     return JSON.stringify(data)
 })
 

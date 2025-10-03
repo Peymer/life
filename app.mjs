@@ -64,7 +64,7 @@ function neighibors(X, Y, pole) {
     return s
 }
 
-export function nextGeneration(sizeX, sizeY, pole) {
+export default function nextGeneration(sizeX, sizeY, pole) {
     let n = init(sizeX, sizeY, false)
     for (let x = 0; x < sizeX; x++) {
         for (let y = 0; y < sizeY; y++) {
