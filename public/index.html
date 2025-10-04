@@ -63,14 +63,12 @@
             lenX = canvas.width / sizeX
             lenY = canvas.height / sizeY
             Generation = 0
-            // let rnd = document.getElementById("rnd").checked
 
-            // if (document.getElementById("rnd").checked) {
             pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
             document.getElementById("rnd").checked = false
-            // }
+
             generationHTML.innerText = Generation;
-            //netOnCanvas(ctx)
+
             canvas.addEventListener('click', Click)
 
 
