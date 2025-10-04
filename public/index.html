@@ -7,7 +7,8 @@
 </head>
 
 <body>
-    <input id="sizeX" value="10" /> * <input id="sizeY" value="10" /><br />
+    <label for="server">Сервер</label><input id="server" /><br />
+    <input id="sizeX" value="10" /> * <input id="sizeY" value="10" />
     <input type="checkbox" id="rnd" />Случайное заполнение<br />
     <button id="startId" onclick="Start()">Start</button>
     <button id="stopId" onclick="Stop()" disabled="true">Stop</button><br />
@@ -16,7 +17,10 @@
     <button id="nextG" onclick="Next()" disabled="true">Следующее</button><br />
 
     <script>
-        var sizeX, sizeY, pole, lenX, lenY, timer, Generation
+        let server = document.getElementById("server").value;
+        if (server == "")
+            server = "127.0.0.1:5555"
+        var sizeX, sizeY, pole, lenX, lenY, timer, Generation, running = false
 
         const generationHTML = document.getElementById("Generation")
         const canvas = document.getElementById("myCanvas");
@@ -36,14 +40,8 @@
 
         // запуск
         function Start() {
-            // sizeX = document.getElementById("sizeX").value
-            // sizeY = document.getElementById("sizeY").value
-            // lenX = canvas.width / sizeX
-            // lenY = canvas.height / sizeY
-            // Generation = 0
-            // pole = init(sizeX, sizeY)
-            // generationHTML.innerText = Generation;
-            canvas.removeEventListener("click", Click)
+
+            running = true
 
             if (document.getElementById("rnd").checked) {
                 pole = init(sizeX, sizeY, true)
@@ -64,15 +62,14 @@
             document.getElementById("startId").disabled = false
             document.getElementById("stopId").disabled = true
             document.getElementById("nextG").disabled = true
-            canvas.addEventListener('click', Click)
+            running = false
         }
 
         // следующее поколение
         async function Next() {
-            // generationHTML.innerText = Generation++ // Для отладки
-            // pole = init(sizeX, sizeY)                // Для отладки
 
-            let q = await fetch("http://192.168.133.235:5555/", {
+
+            let q = await fetch('http://' + server, {
                 "redirect": 'follow',
                 "mode": 'cors',
                 "method": "POST",
@@ -92,6 +89,7 @@
         function drawСitizen(x, y, r = Math.min(lenX / 2, lenY / 2)) {
             let C = calcCenter(x, y)
             ctx.beginPath();
+            ctx.fillStyle = "black"
             ctx.arc(C.x, C.y, r, 0, 2 * Math.PI);
             ctx.fill();
         }
@@ -166,6 +164,8 @@
 
         //щелчек мышки по canvas
         function Click(e) {
+            if (running)
+                return false
             let x = Math.trunc(e.offsetX / lenX)
             let y = Math.trunc(e.offsetY / lenY)
             if (pole[x][y] === 0) {
@@ -176,6 +176,7 @@
                 pole[x][y] = 0
                 clearСitizen(x, y)
             }
+            return true
         }
     </script>
 </body>
