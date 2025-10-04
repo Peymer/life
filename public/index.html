@@ -9,7 +9,7 @@
 <body>
     <!--    <label for="server">Сервер</label><input id="server" /><br /> -->
     <input id="sizeX" value="10" onchange="changeDim()" /> * <input id="sizeY" value="10" onchange="changeDim()" />
-    <input type="checkbox" id="rnd" onchang="rndChange()" />Случайное заполнение<br />
+    <input type="checkbox" id="rnd" onclick="rndChange()" />Случайное заполнение<br />
     <button id="startId" onclick="Start()">Start</button>
     <button id="stopId" onclick="Stop()" disabled="true">Stop</button><br />
     Поколение:<label id="Generation"></label><br />
@@ -47,11 +47,10 @@
         }
 
         function rndChange() {
-            rnd = document.getElementById("rnd").checked
-            // if (rnd) {
-            pole = init(sizeX, sizeY, rnd)
+            changeDim()
+            // pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
             document.getElementById("rnd").checked = false
-            // }
+            drawOnCanvas(ctx, pole)
         }
 
         // запуск
@@ -64,14 +63,12 @@
             lenY = canvas.height / sizeY
             Generation = 0
 
-            pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
+            // pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
             document.getElementById("rnd").checked = false
 
             generationHTML.innerText = Generation;
 
             canvas.addEventListener('click', Click)
-
-
 
             drawOnCanvas(ctx, pole)
 
