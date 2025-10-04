@@ -7,9 +7,9 @@
 </head>
 
 <body>
-    <label for="server">Сервер</label><input id="server" /><br />
-    <input id="sizeX" value="10" /> * <input id="sizeY" value="10" />
-    <input type="checkbox" id="rnd" />Случайное заполнение<br />
+    <!--    <label for="server">Сервер</label><input id="server" /><br /> -->
+    <input id="sizeX" value="10" onchange="changeDim()" /> * <input id="sizeY" value="10" onchange="changeDim()" />
+    <input type="checkbox" id="rnd" onchang="rndChange()" />Случайное заполнение<br />
     <button id="startId" onclick="Start()">Start</button>
     <button id="stopId" onclick="Stop()" disabled="true">Stop</button><br />
     Поколение:<label id="Generation"></label><br />
@@ -17,36 +17,63 @@
     <button id="nextG" onclick="Next()" disabled="true">Следующее</button><br />
 
     <script>
-        let server = document.getElementById("server").value;
-        if (server == "")
-            server = "127.0.0.1:5555"
-        var sizeX, sizeY, pole, lenX, lenY, timer, Generation, running = false
+        //        let server = document.getElementById("server").value;
+        //        if (server == "")
+        //            server = "127.0.0.1:5555"
+        var sizeX, sizeY, pole, lenX, lenY, timer, Generation, running = false, rnd = false
 
         const generationHTML = document.getElementById("Generation")
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
 
-        sizeX = document.getElementById("sizeX").value
-        sizeY = document.getElementById("sizeY").value
-        lenX = canvas.width / sizeX
-        lenY = canvas.height / sizeY
-        Generation = 0
-        let rnd = document.getElementById("rnd").checked
-        pole = init(sizeX, sizeY)
-        generationHTML.innerText = Generation;
-        netOnCanvas(ctx)
+        // sizeX = document.getElementById("sizeX").value
+        // sizeY = document.getElementById("sizeY").value
+        // lenX = canvas.width / sizeX
+        // lenY = canvas.height / sizeY
+        // Generation = 0
+        // let rnd = document.getElementById("rnd").checked
+        // pole = init(sizeX, sizeY)
+        // generationHTML.innerText = Generation;
+        // netOnCanvas(ctx)
         canvas.addEventListener('click', Click)
 
+        function changeDim() {
+            sizeX = document.getElementById("sizeX").value
+            sizeY = document.getElementById("sizeY").value
+            lenX = canvas.width / sizeX
+            lenY = canvas.height / sizeY
+            netOnCanvas(ctx)
+            pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
+        }
+
+        function rndChange() {
+            rnd = document.getElementById("rnd").checked
+            // if (rnd) {
+            pole = init(sizeX, sizeY, rnd)
+            document.getElementById("rnd").checked = false
+            // }
+        }
 
         // запуск
         function Start() {
-
             running = true
 
-            if (document.getElementById("rnd").checked) {
-                pole = init(sizeX, sizeY, true)
-                document.getElementById("rnd").checked = false
-            }
+            sizeX = document.getElementById("sizeX").value
+            sizeY = document.getElementById("sizeY").value
+            lenX = canvas.width / sizeX
+            lenY = canvas.height / sizeY
+            Generation = 0
+            // let rnd = document.getElementById("rnd").checked
+
+            // if (document.getElementById("rnd").checked) {
+            pole = init(sizeX, sizeY, document.getElementById("rnd").checked)
+            document.getElementById("rnd").checked = false
+            // }
+            generationHTML.innerText = Generation;
+            //netOnCanvas(ctx)
+            canvas.addEventListener('click', Click)
+
+
 
             drawOnCanvas(ctx, pole)
 
@@ -69,7 +96,7 @@
         async function Next() {
 
 
-            let q = await fetch('http://' + server, {
+            let q = await fetch('/', {
                 "redirect": 'follow',
                 "mode": 'cors',
                 "method": "POST",
