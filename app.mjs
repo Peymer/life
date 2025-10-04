@@ -57,8 +57,8 @@ function neighibors(X, Y, pole) {
     let s = -pole[X][Y]
     for (let i = -1; i < 2; i++)
         for (let j = -1; j < 2; j++) {
-            let x1 = (X + i < 0) ? sizeX - 1 : (X + i >= sizeX) ? 0 : X + i
-            let y1 = (Y + j < 0) ? sizeY - 1 : (Y + j >= sizeY) ? 0 : Y + j
+            let x1 = (X + i < 0) ? pole[X].length - 1 : (X + i >= pole[X].length) ? 0 : X + i
+            let y1 = (Y + j < 0) ? pole.length - 1 : (Y + j >= pole.length) ? 0 : Y + j
             s += pole[x1][y1]
         }
     return s
@@ -88,14 +88,14 @@ export default function nextGeneration(sizeX, sizeY, pole) {
 
 
 
-let pole = init(sizeX, sizeY)
+let pole = init(sizeX, sizeY, true)
 for (let g = 0; g < 150; g++) {
     console.log('Поколение:', g)
     const gg = {
         "gen": g,
         "pole": pole
     }
-    console.error("Для передачи на сервер:", JSON.stringify(gg))
+    // console.error("Для передачи на сервер:", JSON.stringify(gg))
     show(pole)
     pole = nextGeneration(sizeX, sizeY, pole)
 }

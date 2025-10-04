@@ -7,13 +7,13 @@
 </head>
 
 <body>
-    <input id="sizeX" /> * <input id="sizeY" /><br />
-    <button id="startId" onclick="Start()">Start</button> <button id="stopId" onclick="Stop()"
-        disabled>Stop</button><br />
-
-    Поколение:<div id="Generation"></div>
+    <input id="sizeX" value="10" /> * <input id="sizeY" value="10" /><br />
+    <input type="checkbox" id="rnd" />Случайное заполнение<br />
+    <button id="startId" onclick="Start()">Start</button>
+    <button id="stopId" onclick="Stop()" disabled="true">Stop</button><br />
+    Поколение:<label id="Generation"></label><br />
     <canvas id="myCanvas" width="1200" height="800" style="background: aqua; border: 0cap;"></canvas><br />
-    <button id="nextG" onclick="Next()" disabled>Следующее</button>
+    <button id="nextG" onclick="Next()" disabled="true">Следующее</button><br />
 
     <script>
         var sizeX, sizeY, pole, lenX, lenY, timer, Generation
@@ -22,15 +22,34 @@
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
 
+        sizeX = document.getElementById("sizeX").value
+        sizeY = document.getElementById("sizeY").value
+        lenX = canvas.width / sizeX
+        lenY = canvas.height / sizeY
+        Generation = 0
+        let rnd = document.getElementById("rnd").checked
+        pole = init(sizeX, sizeY)
+        generationHTML.innerText = Generation;
+        netOnCanvas(ctx)
+        canvas.addEventListener('click', Click)
+
+
         // запуск
         function Start() {
-            sizeX = document.getElementById("sizeX").value
-            sizeY = document.getElementById("sizeY").value
-            lenX = canvas.width / sizeX
-            lenY = canvas.height / sizeY
-            Generation = 0
-            pole = init(sizeX, sizeY)
-            generationHTML.innerText = Generation;
+            // sizeX = document.getElementById("sizeX").value
+            // sizeY = document.getElementById("sizeY").value
+            // lenX = canvas.width / sizeX
+            // lenY = canvas.height / sizeY
+            // Generation = 0
+            // pole = init(sizeX, sizeY)
+            // generationHTML.innerText = Generation;
+            canvas.removeEventListener("click", Click)
+
+            if (document.getElementById("rnd").checked) {
+                pole = init(sizeX, sizeY, true)
+                document.getElementById("rnd").checked = false
+            }
+
             drawOnCanvas(ctx, pole)
 
             timer = setInterval(() => Next(), 2000); // новое поколение через 2 секунды (2000мс=2*1000с)
@@ -45,6 +64,7 @@
             document.getElementById("startId").disabled = false
             document.getElementById("stopId").disabled = true
             document.getElementById("nextG").disabled = true
+            canvas.addEventListener('click', Click)
         }
 
         // следующее поколение
@@ -52,7 +72,7 @@
             // generationHTML.innerText = Generation++ // Для отладки
             // pole = init(sizeX, sizeY)                // Для отладки
 
-            let q = await fetch("http://127.0.0.1:5555/", {
+            let q = await fetch("http://192.168.133.235:5555/", {
                 "redirect": 'follow',
                 "mode": 'cors',
                 "method": "POST",
@@ -72,6 +92,15 @@
         function drawСitizen(x, y, r = Math.min(lenX / 2, lenY / 2)) {
             let C = calcCenter(x, y)
             ctx.beginPath();
+            ctx.arc(C.x, C.y, r, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        // Стирает жителя в клетке (x,y)
+        function clearСitizen(x, y, r = Math.min(lenX / 2, lenY / 2)) {
+            let C = calcCenter(x, y)
+            ctx.beginPath();
+            ctx.fillStyle = "aqua"
             ctx.arc(C.x, C.y, r, 0, 2 * Math.PI);
             ctx.fill();
         }
@@ -121,15 +150,32 @@
         }
 
         // Случайным образо заполняет pole
-        function init(statX, startY) {
-            let pole = [];
+        function init(statX, startY, random = false) {
+            let p = [];
             for (let i = 0; i < sizeX; i++) {
                 let s1 = [];
                 for (let j = 0; j < sizeY; j++)
-                    s1.push(Math.random() < 0.5 ? 1 : 0);
-                pole.push(s1);
+                    if (random)
+                        s1.push(Math.random() < 0.5 ? 1 : 0);
+                    else
+                        s1.push(0)
+                p.push(s1);
             }
-            return pole;
+            return p;
+        }
+
+        //щелчек мышки по canvas
+        function Click(e) {
+            let x = Math.trunc(e.offsetX / lenX)
+            let y = Math.trunc(e.offsetY / lenY)
+            if (pole[x][y] === 0) {
+                pole[x][y] = 1
+                drawСitizen(x, y)
+            }
+            else {
+                pole[x][y] = 0
+                clearСitizen(x, y)
+            }
         }
     </script>
 </body>

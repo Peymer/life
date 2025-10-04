@@ -27,7 +27,7 @@ server.post("/", async (req, reply) => {
     return JSON.stringify(data)
 })
 
-let s = server.listen({ port: 5555 }, (err, address) => {
+let s = server.listen({ port: 5555, host:"0.0.0.0" }, (err, address) => {
     if (err) throw err
     console.log(`Работает по адресу ${address}`)
 })
